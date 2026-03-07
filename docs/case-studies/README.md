@@ -15,7 +15,7 @@ This directory contains case study documents for each module. Every case study f
 
 | Module | Case Study | Status |
 |--------|-----------|--------|
-| User Management | Monolith scaling pain & the 2016 data breach | ⬜ Planned |
+| User Management | [Monolith scaling pain & the 2016 data breach](../../src/modules/user/CASE_STUDY.md) | ✅ Complete |
 | Authentication | Account takeover attacks | ⬜ Planned |
 | Driver Onboarding | Background check failures & impersonation | ⬜ Planned |
 | Profile & Privacy | GDPR violations (€290M + €10M fines) | ⬜ Planned |
