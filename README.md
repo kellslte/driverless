@@ -51,6 +51,30 @@ The platform comprises three client applications and a backend:
 
 ---
 
+## What This Project Demonstrates
+
+This project is not just an implementation — it is a demonstration of:
+
+• Designing real-time distributed systems
+• Handling high-frequency geospatial data (location streaming)
+• Building marketplace systems (supply-demand matching)
+• Applying event-driven architecture in production scenarios
+• Making explicit engineering trade-offs under real-world constraints
+
+---
+
+## Core Engineering Challenges
+
+Driverless focuses on solving the hardest problems in ride-hailing systems:
+
+• Efficient driver-rider matching at scale
+• Real-time location tracking with minimal write amplification
+• Handling race conditions in distributed dispatch systems
+• Designing fair and transparent dynamic pricing
+• Preventing fraud and abuse in marketplace systems
+• Maintaining system reliability under high concurrency
+
+
 ## Philosophy
 
 ### Why Build This?
@@ -129,6 +153,28 @@ src/modules/<module-name>/
 **Dependency rule:** outer layers depend on inner layers, never the reverse. The domain layer is pure TypeScript with no framework imports.
 
 ---
+
+## System Design Snapshot
+
+A simplified flow of a ride request:
+
+Rider → API Gateway → Ride Service
+↓
+Matching Service → Redis (Geo Index)
+↓
+Driver Selection → WebSocket Notification
+↓
+Ride Confirmation → Real-Time Tracking
+
+---
+
+## Key Design Decisions
+
+• Geo-spatial indexing using H3 instead of naive distance calculations
+• Redis for high-frequency location updates instead of PostgreSQL
+• Event-driven communication via RabbitMQ to decouple services
+• Modular monolith to balance simplicity and scalability
+
 
 ## Project Phases
 
@@ -346,6 +392,51 @@ driverless/
 ├── tsconfig.json
 └── README.md                        # ← You are here
 ```
+
+## Example Engineering Tradeoff
+
+### Problem
+
+Where should driver location updates be stored?
+
+### Options
+
+1. Store in PostgreSQL
+2. Store in Redis
+3. Hybrid approach
+
+### Decision
+
+Use Redis for real-time location tracking.
+
+### Why
+
+• high write throughput
+• low latency reads
+• ephemeral data fits Redis model
+
+### Tradeoff
+
+• data not persisted long-term
+• requires fallback persistence strategy
+
+### Conclusion
+
+Real-time systems require prioritizing latency over durability for certain data paths.
+
+---
+
+## Scaling Considerations
+
+If Driverless were to scale to millions of users:
+
+• split matching service into dedicated microservice
+• introduce regional sharding for location data
+• use Kafka instead of RabbitMQ for high-throughput streaming
+• implement read replicas for PostgreSQL
+• introduce edge caching for frequently accessed data
+
+This project is designed with a clear path from modular monolith to distributed system.
 
 ---
 
